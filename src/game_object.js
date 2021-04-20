@@ -18,7 +18,7 @@ export default class GameObject {
         this.collider = new THREE.Box3();
         this.collider.setFromObject(this._mesh);
         this._bbHelper = new THREE.BoxHelper(this._mesh, 0xff0000);
-        console.log(this._bbHelper);
+        console.log(this.collider);
     }
     get_mesh() {
         return this._mesh;
@@ -45,6 +45,11 @@ export default class GameObject {
     }
     movey(value) {
         this._pos.y += value;
+        this.update_position();
+    }
+
+    move_with_camera(miny) {
+        this._pos.y = Math.max(miny, this._pos.y);
         this.update_position();
     }
 }

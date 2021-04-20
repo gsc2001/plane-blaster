@@ -5,8 +5,10 @@ export default {
         far: 1000,
         view_angle: 45,
         initial_position: [0, -12, 6],
+        speed: 0.01,
     },
 
+    debug: true,
     // lighting
     lighting: {
         ambient: {
@@ -38,5 +40,6 @@ export default {
 
     player: {
         speed: 0.2,
+        initial_position: [0, -4.5, 0],
     },
 };

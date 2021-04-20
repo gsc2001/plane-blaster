@@ -1,8 +1,8 @@
 import * as THREE from 'three';
+import * as dat from 'dat.gui';
 import config from './config';
 
 import Player from './player';
-import GameObject from './game_object';
 import Ground from './ground';
 
 export default class Game {
@@ -23,13 +23,12 @@ export default class Game {
     async init() {
         this.camera.position.set(...config.camera.initial_position);
         this.camera.lookAt(0, 0, 0);
+        this.move_camera = !config.debug;
 
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this.renderer.domElement);
 
         this.scene.background = new THREE.Color('black');
-
-        this.player = new Player([0, 0, config.playing_z]);
         const groundSize = [
             config.maxx - config.minx + 10,
             config.maxy - config.miny,
@@ -38,15 +37,17 @@ export default class Game {
             (config.maxx + config.minx) / 2,
             (config.maxy + config.miny) / 2,
         ];
-        console.log(groundSize, groundPos);
-        this.ground = new Ground(groundPos, groundSize);
-        console.log(this.ground);
 
+        this.camera_min_vec = new THREE.Vector3(
+            ...config.player.initial_position
+        ).sub(this.camera.position);
+
+        this.player = new Player(config.player.initial_position);
+        this.ground = new Ground(groundPos, groundSize);
         await this.player.init();
         this.scene.add(this.player.get_mesh());
         this.scene.add(this.ground.get_mesh());
         this.scene.add(this.player.getBBHelper());
-
         this.setLightings();
     }
 
@@ -101,13 +102,41 @@ export default class Game {
                 this.player.movex(config.player.speed);
                 break;
         }
+        // DEBUGs
+        if (config.debug) {
+            switch (char) {
+                case 'M':
+                    this.move_camera = !this.move_camera;
+                    break;
+                case 'H':
+                    this.camera.position.x -= 0.1;
+                    break;
+                case 'L':
+                    this.camera.position.x += 0.1;
+                    break;
+                case 'J':
+                    this.camera.position.y -= 0.1;
+                    break;
+                case 'K':
+                    this.camera.position.y += 0.1;
+                    break;
+            }
+        }
     }
 
     spawnStars() {}
 
     update() {
-        // if (this.player.mesh && this.player.mesh.rotation)
-        //     this.player.mesh.rotation.z -= 0.005;
+        // move camera by some velocity
+        if (this.move_camera) {
+            this.camera.position.y += config.camera.speed;
+            let temp_vec = this.camera_min_vec.clone();
+            const camera_min = temp_vec.add(this.camera.position).y;
+            this.player.move_with_camera(camera_min);
+        }
+    }
+
+    render() {
         this.renderer.render(this.scene, this.camera);
     }
 }
