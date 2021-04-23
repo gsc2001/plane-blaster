@@ -9,6 +9,13 @@ export default class GameObject {
         this._shader_path = shader_path;
         this._scale = new THREE.Vector3(...scale);
     }
+    is_active() {
+        return this._mesh.visible;
+    }
+    destroy() {
+        this._mesh.visible = false;
+        this._bbHelper.visible = false;
+    }
     async init() {
         let loader = new GLTFLoader();
         let gltf = await loader.loadAsync(this._shader_path);
@@ -37,6 +44,7 @@ export default class GameObject {
         );
         this._mesh.position.copy(this._pos);
         this._bbHelper.update();
+        this.collider.setFromObject(this._mesh);
     }
 
     movex(value) {
@@ -51,5 +59,10 @@ export default class GameObject {
     move_with_camera(miny) {
         this._pos.y = Math.max(miny, this._pos.y);
         this.update_position();
+    }
+
+    static collided(o1, o2) {
+        if (!o1.is_active() || !o2.is_active()) return false;
+        return o1.collider.intersectsBox(o2.collider);
     }
 }

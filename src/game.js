@@ -4,31 +4,39 @@ import config from './config';
 
 import Player from './player';
 import Ground from './ground';
+import Star from './star';
+import GameObject from './game_object';
 
 export default class Game {
     constructor() {
-        this.renderer = new THREE.WebGLRenderer({
+        this._renderer = new THREE.WebGLRenderer({
             antialias: true,
             alpha: true,
         });
-        this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera(
+        this._scene = new THREE.Scene();
+        this._camera = new THREE.PerspectiveCamera(
             config.camera.view_angle,
             window.innerWidth / window.innerHeight,
             config.camera.near,
             config.camera.far
         );
+        this._score = 0;
+    }
+
+    sceneAdd(obj) {
+        this._scene.add(obj.get_mesh());
+        this._scene.add(obj.getBBHelper());
     }
 
     async init() {
-        this.camera.position.set(...config.camera.initial_position);
-        this.camera.lookAt(0, 0, 0);
-        this.move_camera = !config.debug;
+        this._camera.position.set(...config.camera.initial_position);
+        this._camera.lookAt(...config.camera.lookAt);
+        this._move_camera = !config.debug;
 
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(this.renderer.domElement);
+        this._renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(this._renderer.domElement);
 
-        this.scene.background = new THREE.Color('black');
+        this._scene.background = new THREE.Color('black');
         const groundSize = [
             config.maxx - config.minx + 10,
             config.maxy - config.miny,
@@ -38,16 +46,18 @@ export default class Game {
             (config.maxy + config.miny) / 2,
         ];
 
-        this.camera_min_vec = new THREE.Vector3(
+        this._camera_min_vec = new THREE.Vector3(
             ...config.player.initial_position
-        ).sub(this.camera.position);
+        ).sub(this._camera.position);
 
-        this.player = new Player(config.player.initial_position);
+        this._player = new Player(config.player.initial_position);
         this.ground = new Ground(groundPos, groundSize);
-        await this.player.init();
-        this.scene.add(this.player.get_mesh());
-        this.scene.add(this.ground.get_mesh());
-        this.scene.add(this.player.getBBHelper());
+        this.star = new Star([0, 5, config.playing_z]);
+        await Promise.all([this._player.init(), this.star.init()]);
+
+        this._scene.add(this.ground.get_mesh());
+        this.sceneAdd(this._player);
+        this.sceneAdd(this.star);
         this.setLightings();
     }
 
@@ -57,7 +67,7 @@ export default class Game {
                 0xffffff,
                 config.lighting.ambient.intensity
             );
-            this.scene.add(this.amb_light);
+            this._scene.add(this.amb_light);
         }
         if (config.lighting.point.on) {
             this.point_light = new THREE.PointLight(
@@ -67,7 +77,7 @@ export default class Game {
             this.point_light.position
                 .set(...config.lighting.point.position)
                 .normalize();
-            this.scene.add(this.point_light);
+            this._scene.add(this.point_light);
         }
         if (config.lighting.directional.on) {
             this.directional_light = new THREE.DirectionalLight(
@@ -80,7 +90,7 @@ export default class Game {
             this.directional_light.lookAt(
                 ...config.lighting.directional.lookAt
             );
-            this.scene.add(this.directional_light);
+            this._scene.add(this.directional_light);
         }
     }
 
@@ -90,53 +100,59 @@ export default class Game {
         console.log(char);
         switch (char) {
             case 'W':
-                this.player.movey(config.player.speed);
+                this._player.movey(config.player.speed);
                 break;
             case 'A':
-                this.player.movex(-config.player.speed);
+                this._player.movex(-config.player.speed);
                 break;
             case 'S':
-                this.player.movey(-config.player.speed);
+                this._player.movey(-config.player.speed);
                 break;
             case 'D':
-                this.player.movex(config.player.speed);
+                this._player.movex(config.player.speed);
                 break;
         }
         // DEBUGs
         if (config.debug) {
             switch (char) {
                 case 'M':
-                    this.move_camera = !this.move_camera;
+                    this._move_camera = !this._move_camera;
                     break;
                 case 'H':
-                    this.camera.position.x -= 0.1;
+                    this._camera.position.x -= 0.1;
                     break;
                 case 'L':
-                    this.camera.position.x += 0.1;
+                    this._camera.position.x += 0.1;
                     break;
                 case 'J':
-                    this.camera.position.y -= 0.1;
+                    this._camera.position.y -= 0.1;
                     break;
                 case 'K':
-                    this.camera.position.y += 0.1;
+                    this._camera.position.y += 0.1;
                     break;
             }
         }
     }
 
-    spawnStars() {}
-
-    update() {
-        // move camera by some velocity
-        if (this.move_camera) {
-            this.camera.position.y += config.camera.speed;
-            let temp_vec = this.camera_min_vec.clone();
-            const camera_min = temp_vec.add(this.camera.position).y;
-            this.player.move_with_camera(camera_min);
+    detectCollisions() {
+        // player and stars
+        if (GameObject.collided(this._player, this.star)) {
+            this._score += this.star.handle_collision_player();
         }
     }
 
+    update() {
+        // move camera by some velocity
+        if (this._move_camera) {
+            this._camera.position.y += config.camera.speed;
+            let temp_vec = this._camera_min_vec.clone();
+            const camera_min = temp_vec.add(this._camera.position).y;
+            this._player.move_with_camera(camera_min);
+        }
+        this.detectCollisions();
+    }
+
     render() {
-        this.renderer.render(this.scene, this.camera);
+        this._renderer.render(this._scene, this._camera);
     }
 }

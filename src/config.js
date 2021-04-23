@@ -1,10 +1,11 @@
 export default {
     // camera stuff
     camera: {
-        near: 1,
-        far: 1000,
-        view_angle: 45,
-        initial_position: [0, -12, 6],
+        near: 0.1,
+        far: 200,
+        view_angle: 75,
+        initial_position: [0, -8, 6],
+        lookAt: [0, 10, 0],
         speed: 0.01,
     },
 
@@ -13,17 +14,17 @@ export default {
     lighting: {
         ambient: {
             on: true,
-            intensity: 2,
+            intensity: 3,
         },
         point: {
             on: true,
             intensity: 20,
-            position: [0, -80, 80],
+            position: [0, -20, 20],
         },
         directional: {
             on: false,
-            intensity: 10,
-            position: [0, -10, 10],
+            intensity: 20,
+            position: [0, 0, 10],
             lookAt: [0, 0, 0],
         },
     },
@@ -33,13 +34,15 @@ export default {
     ground: {
         z: -2,
     },
-    minx: -12.5,
-    maxx: 12.5,
-    miny: -50,
+    minx: -10,
+    maxx: 10,
+    miny: -2,
     maxy: 50,
 
     player: {
         speed: 0.2,
-        initial_position: [0, -4.5, 0],
+        initial_position: [0, -2, 0],
     },
+
+    scoreAdd: 10,
 };
