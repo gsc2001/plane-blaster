@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-import GameObject from './game_object';
+import GameObject from './gameObjects';
 import config from './config';
 
 // Only for dev
@@ -20,7 +20,7 @@ class Ground {
         this.mesh.position.set(...pos, config.ground.z);
     }
 
-    get_mesh() {
+    getMesh() {
         return this.mesh;
     }
 }

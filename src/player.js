@@ -1,6 +1,6 @@
-import GameObject from './game_object';
+import { LiveObject } from './gameObjects';
 
-export default class Player extends GameObject {
+export default class Player extends LiveObject {
     constructor(pos) {
         super(pos, '/models/sphere/new_sphere.gltf', [0.6, 0.6, 0.6]);
     }

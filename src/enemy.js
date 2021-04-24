@@ -1,9 +1,9 @@
 import * as THREE from 'three';
-import GameObject from './game_object';
+import { LiveObject } from './gameObjects';
 import config from './config';
 import { rand, randint } from './utils';
 
-export default class Enemy extends GameObject {
+export default class Enemy extends LiveObject {
     constructor(pos, playerPos) {
         const vpos = new THREE.Vector3(...pos);
         super(
@@ -27,13 +27,13 @@ export default class Enemy extends GameObject {
             return enemies;
         }
     }
-    follow_player(player_pos) {
-        const diff = player_pos.clone().sub(this._pos);
+
+    followPlayer(playerVec) {
+        const diff = playerVec.clone().sub(this._pos);
         diff.normalize();
-        if (!config.debug) {
+        if (!config.debug)
             this._pos.add(diff.multiplyScalar(config.enemiesSpeed));
-        }
         this._front.copy(diff);
-        this.update_dims();
+        this.updateDims();
     }
 }

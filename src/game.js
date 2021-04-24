@@ -6,7 +6,7 @@ import Player from './player';
 import Ground from './ground';
 import Star from './star';
 import Enemy from './enemy';
-import GameObject from './game_object';
+import GameObject from './gameObjects';
 
 export default class Game {
     constructor() {
@@ -25,7 +25,7 @@ export default class Game {
     }
 
     sceneAdd(obj) {
-        this._scene.add(obj.get_mesh());
+        this._scene.add(obj.getMesh());
         this._scene.add(obj.getBBHelper());
     }
 
@@ -61,7 +61,7 @@ export default class Game {
             ...this._enemies.map(e => e.init()),
         ]);
 
-        this._scene.add(this.ground.get_mesh());
+        this._scene.add(this.ground.getMesh());
         this.sceneAdd(this._player);
         this.sceneAdd(this.star);
         this._enemies.forEach(e => this.sceneAdd(e));
@@ -144,7 +144,7 @@ export default class Game {
     detectCollisions() {
         // player and stars
         if (GameObject.collided(this._player, this.star)) {
-            this._score += this.star.handle_collision_player();
+            this._score += this.star.handleCollisionPlayer();
         }
     }
 
@@ -154,10 +154,10 @@ export default class Game {
             this._camera.position.y += config.camera.speed;
             let temp_vec = this._camera_min_vec.clone();
             const camera_min = temp_vec.add(this._camera.position).y;
-            this._player.move_with_camera(camera_min);
+            this._player.moveWithCamera(camera_min);
         }
         for (let enemy of this._enemies) {
-            enemy.follow_player(this._player.getPos());
+            enemy.followPlayer(this._player.getPos());
         }
         this.detectCollisions();
     }
