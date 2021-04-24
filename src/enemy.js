@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { LiveObject } from './gameObjects';
+import { LiveObject } from './liveObject';
 import config from './config';
 import { rand, randint } from './utils';
 
@@ -34,6 +34,6 @@ export default class Enemy extends LiveObject {
         if (!config.debug)
             this._pos.add(diff.multiplyScalar(config.enemiesSpeed));
         this._front.copy(diff);
-        this.updateDims();
+        this.updatePosition();
     }
 }

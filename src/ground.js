@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 
-import GameObject from './gameObjects';
 import config from './config';
 
 // Only for dev

@@ -6,7 +6,7 @@ import Player from './player';
 import Ground from './ground';
 import Star from './star';
 import Enemy from './enemy';
-import GameObject from './gameObjects';
+import GameObject from './gameObject';
 
 export default class Game {
     constructor() {
@@ -105,19 +105,14 @@ export default class Game {
         var keycode = event.which;
         const char = String.fromCharCode(keycode);
         console.log(char);
-        switch (char) {
-            case 'W':
-                this._player.movey(config.player.speed);
-                break;
-            case 'A':
-                this._player.movex(-config.player.speed);
-                break;
-            case 'S':
-                this._player.movey(-config.player.speed);
-                break;
-            case 'D':
-                this._player.movex(config.player.speed);
-                break;
+        if (char == 'W') this._player.movey(config.player.speed);
+        if (char == 'A') this._player.movex(-config.player.speed);
+        if (char == 'S') this._player.movey(-config.player.speed);
+        if (char == 'D') this._player.movex(config.player.speed);
+        if (char == 'F') {
+            this._player.fireBullet().then(bul => {
+                if (bul) this.sceneAdd(bul);
+            });
         }
         // DEBUGs
         if (config.debug) {
@@ -156,6 +151,7 @@ export default class Game {
             const camera_min = temp_vec.add(this._camera.position).y;
             this._player.moveWithCamera(camera_min);
         }
+        this._player.updateBullets();
         for (let enemy of this._enemies) {
             enemy.followPlayer(this._player.getPos());
         }

@@ -48,5 +48,7 @@ export default {
     enemiesMin: 4,
     enemiesMax: 10,
     enemiesSpeed: 0.04,
+    enemyBulletDelay: 1000,
     bulletSpeed: 0.08,
+    bulletMinDelay: 700,
 };

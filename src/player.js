@@ -1,4 +1,4 @@
-import { LiveObject } from './gameObjects';
+import { LiveObject } from './liveObject';
 
 export default class Player extends LiveObject {
     constructor(pos) {

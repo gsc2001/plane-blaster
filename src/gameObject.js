@@ -28,18 +28,7 @@ export default class GameObject {
         this._mesh = gltf.scene;
         this._bbHelper = new THREE.BoxHelper(this._mesh, 0xff0000);
         this.collider = new THREE.Box3();
-        this.updateDims();
-    }
-    updateDims() {
-        this._front.normalize();
-        const coszt = vecy.dot(this._front);
-        let angle = Math.acos(coszt);
-        if (this._front.x > 0) angle = -angle;
-        this._mesh.scale.copy(this._scale);
-        this._mesh.position.copy(this._pos);
-        this._mesh.setRotationFromAxisAngle(vecz, angle);
-        this.collider.setFromObject(this._mesh);
-        this._bbHelper.update();
+        this.updatePosition();
     }
     getMesh() {
         return this._mesh;
@@ -56,18 +45,14 @@ export default class GameObject {
         return this._bbHelper;
     }
 
-    static collided(o1, o2) {
-        if (!o1.is_active() || !o2.is_active()) return false;
-        return o1.collider.intersectsBox(o2.collider);
-    }
-}
-
-export class LiveObject extends GameObject {
-    constructor(pos, shaderPath, scale, front = [0, 1, 0]) {
-        super(pos, shaderPath, scale, front);
-    }
-
     updatePosition() {
+        this._front.normalize();
+        const coszt = vecy.dot(this._front);
+        let angle = Math.acos(coszt);
+        if (this._front.x > 0) angle = -angle;
+        this._mesh.scale.copy(this._scale);
+        this._mesh.setRotationFromAxisAngle(vecz, angle);
+
         this._pos.clamp(
             new THREE.Vector3(config.minx, config.miny, -100),
             new THREE.Vector3(config.maxx, config.maxy, 100)
@@ -89,5 +74,9 @@ export class LiveObject extends GameObject {
     moveWithCamera(miny) {
         this._pos.y = Math.max(miny, this._pos.y);
         this.updatePosition();
+    }
+    static collided(o1, o2) {
+        if (!o1.is_active() || !o2.is_active()) return false;
+        return o1.collider.intersectsBox(o2.collider);
     }
 }

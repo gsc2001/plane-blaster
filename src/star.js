@@ -1,4 +1,4 @@
-import GameObject from './gameObjects';
+import GameObject from './gameObject';
 import config from './config';
 
 class Star extends GameObject {
