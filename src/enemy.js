@@ -30,6 +30,9 @@ export default class Enemy extends GameObject {
     follow_player(player_pos) {
         const diff = player_pos.clone().sub(this._pos);
         diff.normalize();
+        if (!config.debug) {
+            this._pos.add(diff.multiplyScalar(config.enemiesSpeed));
+        }
         this._front.copy(diff);
         this.update_dims();
     }

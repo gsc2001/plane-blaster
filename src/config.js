@@ -47,4 +47,5 @@ export default {
     scoreAdd: 10,
     enemiesMin: 4,
     enemiesMax: 10,
+    enemiesSpeed: 0.05,
 };
