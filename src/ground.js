@@ -7,7 +7,10 @@ import config from './config';
 // TODO: Change with a better ground
 class Ground {
     constructor(pos, size) {
-        const geometry = new THREE.PlaneGeometry(...size);
+        const geometry = new THREE.PlaneGeometry(
+            config.maxx - config.minx + 10,
+            config.maxy - config.miny + 100
+        );
         const material = new THREE.MeshBasicMaterial({
             color: 0xffffff,
             side: THREE.DoubleSide,

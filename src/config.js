@@ -17,12 +17,12 @@ export default {
             intensity: 3,
         },
         point: {
-            on: true,
+            on: false,
             intensity: 20,
             position: [0, -20, 20],
         },
         directional: {
-            on: false,
+            on: true,
             intensity: 20,
             position: [0, 0, 10],
             lookAt: [0, 0, 0],
@@ -37,7 +37,7 @@ export default {
     minx: -10,
     maxx: 10,
     miny: -2,
-    maxy: 50,
+    maxy: 100,
 
     player: {
         speed: 0.2,
@@ -45,4 +45,6 @@ export default {
     },
 
     scoreAdd: 10,
+    enemiesMin: 4,
+    enemiesMax: 10,
 };

@@ -5,6 +5,7 @@ import config from './config';
 import Player from './player';
 import Ground from './ground';
 import Star from './star';
+import Enemy from './enemy';
 import GameObject from './game_object';
 
 export default class Game {
@@ -52,12 +53,18 @@ export default class Game {
 
         this._player = new Player(config.player.initial_position);
         this.ground = new Ground(groundPos, groundSize);
-        this.star = new Star([0, 5, config.playing_z]);
-        await Promise.all([this._player.init(), this.star.init()]);
+        this.star = new Star([5, 5, config.playing_z]);
+        this._enemies = Enemy.getEnemies(this._player.getPos());
+        await Promise.all([
+            this._player.init(),
+            this.star.init(),
+            ...this._enemies.map(e => e.init()),
+        ]);
 
         this._scene.add(this.ground.get_mesh());
         this.sceneAdd(this._player);
         this.sceneAdd(this.star);
+        this._enemies.forEach(e => this.sceneAdd(e));
         this.setLightings();
     }
 
@@ -148,6 +155,9 @@ export default class Game {
             let temp_vec = this._camera_min_vec.clone();
             const camera_min = temp_vec.add(this._camera.position).y;
             this._player.move_with_camera(camera_min);
+        }
+        for (let enemy of this._enemies) {
+            enemy.follow_player(this._player.getPos());
         }
         this.detectCollisions();
     }
