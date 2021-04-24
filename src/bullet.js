@@ -20,7 +20,17 @@ export default class Bullet extends GameObject {
             this._pos.add(
                 this._front.clone().multiplyScalar(config.bulletSpeed)
             );
+            if (
+                this._pos.x >= config.maxx ||
+                this._pos.x <= config.minx ||
+                this._pos.y <= config.miny ||
+                this._pos.y >= config.maxy
+            ) {
+                this.destroy();
+                return true;
+            }
             this.updatePosition();
         }
+        return false;
     }
 }

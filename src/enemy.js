@@ -12,6 +12,23 @@ export default class Enemy extends LiveObject {
             [0.6, 0.6, 0.6],
             vpos.sub(playerPos)
         );
+        this._bulletIntervals = [];
+    }
+    async init(addToScene) {
+        await super.init();
+        // if (!config.debugaaaa)
+        this._bulletIntervals.push(
+            setInterval(() => {
+                this.fireBullet().then(bul => {
+                    if (bul) addToScene(bul);
+                });
+            }, config.enemyBulletDelay)
+        );
+    }
+    destroy() {
+        for (let int of this._bulletIntervals) {
+            clearTimeout(int);
+        }
     }
     static getEnemies(playerPos) {
         if (config.debug) {

@@ -58,7 +58,7 @@ export default class Game {
         await Promise.all([
             this._player.init(),
             this.star.init(),
-            ...this._enemies.map(e => e.init()),
+            ...this._enemies.map(e => e.init(obj => this.sceneAdd(obj))),
         ]);
 
         this._scene.add(this.ground.getMesh());
@@ -154,6 +154,7 @@ export default class Game {
         this._player.updateBullets();
         for (let enemy of this._enemies) {
             enemy.followPlayer(this._player.getPos());
+            enemy.updateBullets();
         }
         this.detectCollisions();
     }

@@ -22,6 +22,8 @@ export class LiveObject extends GameObject {
         return bullet;
     }
     updateBullets() {
-        for (let bullet of this._bullets) bullet.update();
+        this._bullets = this._bullets.filter(bullet => {
+            return !bullet.update();
+        });
     }
 }
