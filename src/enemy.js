@@ -12,23 +12,25 @@ export default class Enemy extends LiveObject {
             [0.6, 0.6, 0.6],
             vpos.sub(playerPos)
         );
-        this._bulletIntervals = [];
+        this._bulletInterval = undefined;
+        this._activated = false;
     }
-    async init(addToScene) {
+    async init() {
         await super.init();
         // if (!config.debugaaaa)
-        this._bulletIntervals.push(
-            setInterval(() => {
-                this.fireBullet().then(bul => {
-                    if (bul) addToScene(bul);
-                });
-            }, config.enemyBulletDelay)
-        );
+    }
+    activate(addToScene) {
+        console.log('activated');
+        this._activated = true;
+        this._bulletInterval = setInterval(() => {
+            this.fireBullet().then(bul => {
+                if (bul) addToScene(bul);
+            });
+        }, config.enemyBulletDelay);
     }
     destroy() {
-        for (let int of this._bulletIntervals) {
-            clearTimeout(int);
-        }
+        clearInterval(this._bulletInterval);
+        super.destroy();
     }
     static getEnemies(playerPos) {
         if (config.debug) {
@@ -45,11 +47,16 @@ export default class Enemy extends LiveObject {
         }
     }
 
-    followPlayer(playerVec) {
+    followPlayer(playerVec, addToScene) {
         const diff = playerVec.clone().sub(this._pos);
+        if (diff.length() <= config.enemyActivateDist && !this._activated) {
+            this.activate(addToScene);
+        }
+        if (!this._activated) {
+            return;
+        }
         diff.normalize();
-        if (!config.debug)
-            this._pos.add(diff.multiplyScalar(config.enemiesSpeed));
+        this._pos.add(diff.multiplyScalar(config.enemiesSpeed));
         this._front.copy(diff);
         this.updatePosition();
     }

@@ -109,6 +109,8 @@ export default class Game {
         if (char == 'A') this._player.movex(-config.player.speed);
         if (char == 'S') this._player.movey(-config.player.speed);
         if (char == 'D') this._player.movex(config.player.speed);
+        if (char == 'Q') this._player.rotate(config.player.rotationSpeed);
+        if (char == 'E') this._player.rotate(-config.player.rotationSpeed);
         if (char == 'F') {
             this._player.fireBullet().then(bul => {
                 if (bul) this.sceneAdd(bul);
@@ -153,7 +155,9 @@ export default class Game {
         }
         this._player.updateBullets();
         for (let enemy of this._enemies) {
-            enemy.followPlayer(this._player.getPos());
+            enemy.followPlayer(this._player.getPos(), obj =>
+                this.sceneAdd(obj)
+            );
             enemy.updateBullets();
         }
         this.detectCollisions();

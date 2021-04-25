@@ -30,7 +30,6 @@ export default {
     },
 
     playing_z: 0,
-    // ground
     ground: {
         z: -2,
     },
@@ -42,6 +41,7 @@ export default {
     player: {
         speed: 0.2,
         initial_position: [0, -2, 0],
+        rotationSpeed: Math.PI / 50,
     },
 
     scoreAdd: 10,
@@ -49,6 +49,7 @@ export default {
     enemiesMax: 10,
     enemiesSpeed: 0.04,
     enemyBulletDelay: 1000,
+    enemyActivateDist: 10,
     bulletSpeed: 0.08,
     bulletMinDelay: 700,
 };

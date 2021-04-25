@@ -12,6 +12,7 @@ export class LiveObject extends GameObject {
     }
 
     async fireBullet() {
+        console.log('hi');
         if (Date.now() - this.lastFire < config.bulletMinDelay) {
             return;
         }
