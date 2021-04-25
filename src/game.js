@@ -22,6 +22,7 @@ export default class Game {
             config.camera.far
         );
         this._score = 0;
+        this._health = config.player.health;
     }
 
     sceneAdd(obj) {
@@ -143,6 +144,26 @@ export default class Game {
         if (GameObject.collided(this._player, this.star)) {
             this._score += this.star.handleCollisionPlayer();
         }
+        const enemybullets = this._enemies
+            .map(e => e.getBullets())
+            .reduce((prev, v) => [...prev, ...v]);
+        const playerBullets = this._player.getBullets();
+
+        for (let bullet of enemybullets) {
+            if (GameObject.collided(bullet, this._player)) {
+                this._health -= config.player.hitHealthDecrease;
+                bullet.destroy();
+            }
+        }
+
+        for (let bullet of playerBullets) {
+            for (let enemy of this._enemies) {
+                if (GameObject.collided(enemy, bullet)) {
+                    enemy.destroy();
+                    bullet.destroy();
+                }
+            }
+        }
     }
 
     update() {
@@ -161,6 +182,12 @@ export default class Game {
             enemy.updateBullets();
         }
         this.detectCollisions();
+
+        // Health checking
+        if (this._health <= 0) {
+            // TODO: End game
+            console.log('You lost');
+        }
     }
 
     render() {

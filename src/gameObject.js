@@ -16,7 +16,7 @@ export default class GameObject {
         this._front.normalize();
     }
     is_active() {
-        return this._mesh.visible;
+        return this._mesh && this._mesh.visible;
     }
     destroy() {
         this._mesh.visible = false;

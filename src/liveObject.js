@@ -27,4 +27,8 @@ export class LiveObject extends GameObject {
             return !bullet.update();
         });
     }
+
+    getBullets() {
+        return this._bullets;
+    }
 }

@@ -39,6 +39,8 @@ export default {
     maxy: 100,
 
     player: {
+        health: 100,
+        hitHealthDecrease: 5,
         speed: 0.2,
         initial_position: [0, -2, 0],
         rotationSpeed: Math.PI / 50,
