@@ -5,14 +5,8 @@ import config from './config';
 export default class Bullet extends GameObject {
     constructor(pos, direction) {
         let vec = new THREE.Vector3(...direction);
-        console.log(vec);
         vec.normalize();
-        super(
-            pos,
-            '/models/sphere/new_sphere.gltf',
-            [0.2, 0.6, 0.2],
-            vec.toArray()
-        );
+        super(pos, '/models/bullet.gltf', [0.8, 1.6, 0.8], vec.toArray());
     }
 
     update() {

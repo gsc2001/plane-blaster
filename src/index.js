@@ -13,5 +13,6 @@ pb.init().then(() => {
     console.log('Game initialized');
     document.addEventListener('keydown', e => pb.handleKeyDown(e));
     document.addEventListener('keyup', e => pb.handleKeyUp(e));
+    document.addEventListener('resize', () => pb.onResize());
     update_world();
 });

@@ -4,7 +4,7 @@ import { randint, rand } from './utils';
 
 class Star extends GameObject {
     constructor(pos) {
-        super(pos, '/models/sphere/new_sphere.gltf', [0.2, 0.2, 0.2]);
+        super(pos, '/models/star.gltf', [0.5, 0.5, -0.5]);
     }
     static getStars() {
         const nStars = randint(config.starsMin, config.startMax);

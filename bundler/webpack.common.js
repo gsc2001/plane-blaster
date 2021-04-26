@@ -15,6 +15,10 @@ module.exports = {
                     from: path.resolve(__dirname, '../assets/models'),
                     to: 'models',
                 },
+                {
+                    from: path.resolve(__dirname, '../assets/images'),
+                    to: 'images',
+                },
             ],
         }),
         new HtmlWebpackPlugin({

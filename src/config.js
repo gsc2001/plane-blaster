@@ -9,7 +9,7 @@ export default {
         speed: 0.01,
     },
 
-    debug: true,
+    debug: false,
     // lighting
     lighting: {
         ambient: {
@@ -29,9 +29,9 @@ export default {
         },
     },
 
-    playing_z: 0,
+    playing_z: -0.5,
     ground: {
-        z: -2,
+        z: -4,
     },
     minx: -10,
     maxx: 10,
@@ -43,7 +43,7 @@ export default {
         hitHealthDecrease: 5,
         crashHealthDecrease: 40,
         speed: 0.2,
-        initial_position: [0, -2, 0],
+        initial_position: [0, -2, -0.5],
         rotationSpeed: Math.PI / 50,
         rollSpeed: Math.PI / 25,
         maxRoll: Math.PI / 6,
@@ -53,11 +53,11 @@ export default {
     startMax: 20,
 
     scoreAdd: 10,
-    enemiesMin: 4,
+    enemiesMin: 8,
     enemiesMax: 10,
     enemiesSpeed: 0.04,
     enemyBulletDelay: 1000,
-    enemyActivateDist: 10,
+    enemyActivateDist: 26,
     bulletSpeed: 0.2,
     bulletMinDelay: 700,
 };

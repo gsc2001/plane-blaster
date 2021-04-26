@@ -12,8 +12,8 @@ export default class Enemy extends LiveObject {
         console.log(playerPos);
         super(
             pos,
+            '/models/plane.gltf',
             // '/models/sphere/new_sphere.gltf',
-            '/models/sphere/new_sphere.gltf',
             [0.6, 0.6, 0.6],
             playerPos.sub(vpos).toArray()
         );
@@ -41,14 +41,16 @@ export default class Enemy extends LiveObject {
     }
     static getEnemies(playerPos) {
         if (config.debug) {
-            return [new Enemy([0, 10, 0], playerPos)];
+            return [new Enemy([0, 10, config.playing_z], playerPos)];
         } else {
             const nEnemies = randint(config.enemiesMin, config.enemiesMax);
             let enemies = [];
             for (let i = 0; i < nEnemies; i++) {
                 let x = rand(config.minx, config.maxx);
-                let y = rand(config.miny + 21, config.maxy);
-                enemies.push(new Enemy([x, y], playerPos.clone()));
+                let y = rand(config.miny + 31, config.maxy);
+                enemies.push(
+                    new Enemy([x, y, config.playing_z], playerPos.clone())
+                );
             }
             return enemies;
         }

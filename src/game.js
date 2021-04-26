@@ -14,6 +14,7 @@ export default class Game {
             antialias: true,
             alpha: true,
         });
+
         this._scene = new THREE.Scene();
         this._camera = new THREE.PerspectiveCamera(
             config.camera.view_angle,
@@ -27,7 +28,7 @@ export default class Game {
 
     sceneAdd(obj) {
         this._scene.add(obj.getMesh());
-        this._scene.add(obj.getBBHelper());
+        // this._scene.add(obj.getBBHelper());
     }
 
     async init() {
@@ -59,6 +60,7 @@ export default class Game {
         this._stars = Star.getStars();
         this._enemies = Enemy.getEnemies(this._player.getPos());
         await Promise.all([
+            this.ground.init(),
             this._player.init(),
             ...this._enemies.map(e => e.init(obj => this.sceneAdd(obj))),
             ...this._stars.map(s => s.init()),
@@ -69,6 +71,9 @@ export default class Game {
         this._enemies.forEach(e => this.sceneAdd(e));
         this._stars.forEach(s => this.sceneAdd(s));
         this.setLightings();
+
+        // remove loading
+        document.getElementById('loading').style.display = 'none';
     }
 
     setLightings() {
@@ -214,5 +219,10 @@ export default class Game {
 
     render() {
         this._renderer.render(this._scene, this._camera);
+    }
+    onResize() {
+        this._camera.aspect = window.innerWidth / window.innerHeight;
+        this._camera.updateProjectionMatrix();
+        this._renderer.setSize(window.innerWidth, window.innerHeight);
     }
 }

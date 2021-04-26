@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import GameObject from './gameObject';
 import config from './config';
 import Bullet from './bullet';
+import { Vector3 } from 'three';
 
 export class LiveObject extends GameObject {
     constructor(pos, shaderPath, scale, front = [0, 1, 0]) {
