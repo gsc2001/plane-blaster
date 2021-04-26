@@ -2,7 +2,7 @@ export default {
     // camera stuff
     camera: {
         near: 0.1,
-        far: 200,
+        far: 40,
         view_angle: 75,
         initial_position: [0, -8, 6],
         lookAt: [0, 10, 0],
@@ -48,12 +48,15 @@ export default {
         maxRoll: Math.PI / 6,
     },
 
+    starsMin: 10,
+    startMax: 20,
+
     scoreAdd: 10,
     enemiesMin: 4,
     enemiesMax: 10,
     enemiesSpeed: 0.04,
     enemyBulletDelay: 1000,
-    enemyActivateDist: 10,
-    bulletSpeed: 0.08,
+    enemyActivateDist: 20,
+    bulletSpeed: 0.2,
     bulletMinDelay: 700,
 };

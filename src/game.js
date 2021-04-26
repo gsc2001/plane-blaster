@@ -54,18 +54,18 @@ export default class Game {
 
         this._player = new Player(config.player.initial_position);
         this.ground = new Ground(groundPos, groundSize);
-        this.star = new Star([5, 5, config.playing_z]);
+        this._stars = Star.getStars();
         this._enemies = Enemy.getEnemies(this._player.getPos());
         await Promise.all([
             this._player.init(),
-            this.star.init(),
             ...this._enemies.map(e => e.init(obj => this.sceneAdd(obj))),
+            ...this._stars.map(s => s.init()),
         ]);
 
         this._scene.add(this.ground.getMesh());
         this.sceneAdd(this._player);
-        this.sceneAdd(this.star);
         this._enemies.forEach(e => this.sceneAdd(e));
+        this._stars.forEach(s => this.sceneAdd(s));
         this.setLightings();
     }
 
@@ -139,17 +139,19 @@ export default class Game {
         this._player.reset_rotation();
     }
 
-    clean() {
-        this._enemies = this._enemies.filter(e => e.is_active());
+    getActiveEnemies() {
+        return this._enemies.filter(e => e._activated);
     }
 
     detectCollisions() {
         // player and stars
-        if (GameObject.collided(this._player, this.star)) {
-            this._score += this.star.handleCollisionPlayer();
+        for (let star of this._stars) {
+            if (GameObject.collided(star, this._player)) {
+                this._score += star.handleCollisionPlayer();
+            }
         }
 
-        const enemybullets = this._enemies
+        const enemybullets = this.getActiveEnemies()
             .map(e => e.getBullets())
             .reduce((prev, v) => [...prev, ...v], []);
         const playerBullets = this._player.getBullets();
@@ -184,10 +186,9 @@ export default class Game {
             enemy.followPlayer(this._player.getPos(), obj =>
                 this.sceneAdd(obj)
             );
-            enemy.updateBullets();
         }
+        this.getActiveEnemies().forEach(e => e.updateBullets());
         this.detectCollisions();
-        this.clean();
         // Health checking
         if (this._health <= 0) {
             // TODO: End game

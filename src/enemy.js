@@ -13,7 +13,7 @@ export default class Enemy extends LiveObject {
         super(
             pos,
             // '/models/sphere/new_sphere.gltf',
-            '/models/plane.gltf',
+            '/models/sphere/new_sphere.gltf',
             [0.6, 0.6, 0.6],
             playerPos.sub(vpos).toArray()
         );
@@ -40,21 +40,24 @@ export default class Enemy extends LiveObject {
         super.destroy();
     }
     static getEnemies(playerPos) {
-        if (config.debug) {
-            return [new Enemy([0, 10, 0], playerPos)];
-        } else {
-            const nEnemies = randint(config.enemiesMin, config.enemiesMax);
-            let enemies = [];
-            for (let i = 0; i < nEnemies; i++) {
-                let x = rand(config.minx, config.maxx);
-                let y = rand(config.miny + 8, config.maxy);
-                enemies.push(new Enemy([x, y], playerPos));
-            }
-            return enemies;
+        // if (config.debug) {
+        //     return [new Enemy([0, 10, 0], playerPos)];
+        // } else {
+        const nEnemies = randint(config.enemiesMin, config.enemiesMax);
+        let enemies = [];
+        for (let i = 0; i < nEnemies; i++) {
+            let x = rand(config.minx, config.maxx);
+            let y = rand(config.miny + 21, config.maxy);
+            enemies.push(new Enemy([x, y], playerPos.clone()));
         }
+        return enemies;
+        // }
     }
 
     followPlayer(playerVec, addToScene) {
+        if (!this.is_active()) {
+            return;
+        }
         const diff = playerVec.clone().sub(this._pos);
         if (diff.length() <= config.enemyActivateDist && !this._activated) {
             this.activate(addToScene);
