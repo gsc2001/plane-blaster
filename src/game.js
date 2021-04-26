@@ -95,9 +95,6 @@ export default class Game {
             this.directional_light.position
                 .set(...config.lighting.directional.position)
                 .normalize();
-            // this.directional_light.lookAt(
-            //     ...config.lighting.directional.lookAt
-            // );
             this._scene.add(this.directional_light);
         }
     }
@@ -139,14 +136,19 @@ export default class Game {
         }
     }
 
+    clean() {
+        this._enemies = this._enemies.filter(e => e.is_active());
+    }
+
     detectCollisions() {
         // player and stars
         if (GameObject.collided(this._player, this.star)) {
             this._score += this.star.handleCollisionPlayer();
         }
+
         const enemybullets = this._enemies
             .map(e => e.getBullets())
-            .reduce((prev, v) => [...prev, ...v]);
+            .reduce((prev, v) => [...prev, ...v], []);
         const playerBullets = this._player.getBullets();
 
         for (let bullet of enemybullets) {
@@ -182,7 +184,7 @@ export default class Game {
             enemy.updateBullets();
         }
         this.detectCollisions();
-
+        this.clean();
         // Health checking
         if (this._health <= 0) {
             // TODO: End game

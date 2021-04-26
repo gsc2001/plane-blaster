@@ -29,7 +29,9 @@ export default class Enemy extends LiveObject {
         }, config.enemyBulletDelay);
     }
     destroy() {
-        clearInterval(this._bulletInterval);
+        console.log(this._activated);
+        if (this._activated) clearInterval(this._bulletInterval);
+        console.log(this._activated);
         super.destroy();
     }
     static getEnemies(playerPos) {
