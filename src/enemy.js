@@ -12,7 +12,7 @@ export default class Enemy extends LiveObject {
         console.log(playerPos);
         super(
             pos,
-            '/models/plane.gltf',
+            '/models/enemy.glb',
             // '/models/sphere/new_sphere.gltf',
             [0.6, 0.6, 0.6],
             playerPos.sub(vpos).toArray()
