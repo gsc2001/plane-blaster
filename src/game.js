@@ -34,6 +34,8 @@ export default class Game {
         this._camera.position.set(...config.camera.initial_position);
         this._camera.lookAt(...config.camera.lookAt);
         this._move_camera = !config.debug;
+        this._scoreElement = document.getElementById('score');
+        this._healthElement = document.getElementById('health');
 
         this._renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this._renderer.domElement);
@@ -182,7 +184,10 @@ export default class Game {
             }
         }
     }
-
+    showScoreAndHealth() {
+        this._scoreElement.innerHTML = this._score;
+        this._healthElement.innerHTML = this._health;
+    }
     update() {
         // move camera by some velocity
         if (this._move_camera) {
@@ -204,6 +209,7 @@ export default class Game {
             // TODO: End game
             console.log('You lost');
         }
+        this.showScoreAndHealth();
     }
 
     render() {

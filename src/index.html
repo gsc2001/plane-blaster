@@ -7,7 +7,28 @@
             body {
                 margin: 0;
             }
+            .container {
+                display: flex;
+                width: 100%;
+                position: absolute;
+                top: 5%;
+                background-color: black;
+                z-index: 100;
+                text-align: center;
+                justify-content: space-around;
+                color: white;
+                font-weight: bolder;
+                font-size: 1.5rem;
+            }
         </style>
+        <div class="container">
+            <div class="score__container">
+                Score: <span id="score"> 00 </span>
+            </div>
+            <div class="health__container">
+                Health: <span id="health"> 100 </span>
+            </div>
+        </div>
     </head>
     <body></body>
 </html>
