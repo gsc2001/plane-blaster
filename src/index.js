@@ -11,6 +11,7 @@ function update_world() {
 
 pb.init().then(() => {
     console.log('Game initialized');
-    document.addEventListener('keydown', e => pb.handleInputs(e));
+    document.addEventListener('keydown', e => pb.handleKeyDown(e));
+    document.addEventListener('keyup', e => pb.handleKeyUp(e));
     update_world();
 });

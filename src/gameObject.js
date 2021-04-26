@@ -6,6 +6,7 @@ import config from './config';
 
 const vecy = new Vector3(0, 1, 0);
 const vecz = new Vector3(0, 0, 1);
+const vec0 = new Vector3(0, 0, 0);
 
 export default class GameObject {
     constructor(pos, shaderPath, scale, front = [0, 1, 0]) {
@@ -51,7 +52,15 @@ export default class GameObject {
         let angle = Math.acos(coszt);
         if (this._front.x > 0) angle = -angle;
         this._mesh.scale.copy(this._scale);
-        this._mesh.setRotationFromAxisAngle(vecz, angle);
+        this._mesh.rotation.z = angle;
+        this._mesh.rotation.y = Math.max(
+            -config.player.maxRoll,
+            this._mesh.rotation.y
+        );
+        this._mesh.rotation.y = Math.min(
+            config.player.maxRoll,
+            this._mesh.rotation.y
+        );
 
         this._pos.clamp(
             new THREE.Vector3(config.minx, config.miny, -100),
@@ -64,6 +73,8 @@ export default class GameObject {
 
     movex(value) {
         this._pos.x += value;
+        if (value > 0) this._mesh.rotation.y += config.player.rollSpeed;
+        if (value < 0) this._mesh.rotation.y -= config.player.rollSpeed;
         this.updatePosition();
     }
     movey(value) {
@@ -78,5 +89,11 @@ export default class GameObject {
     static collided(o1, o2) {
         if (!o1.is_active() || !o2.is_active()) return false;
         return o1.collider.intersectsBox(o2.collider);
+    }
+
+    reset_rotation() {
+        console.log('called');
+        this._mesh.rotation.y = 0;
+        this._mesh.rotation.x = 0;
     }
 }

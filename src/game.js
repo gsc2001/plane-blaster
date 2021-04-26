@@ -99,7 +99,7 @@ export default class Game {
         }
     }
 
-    handleInputs(event) {
+    handleKeyDown(event) {
         var keycode = event.which;
         const char = String.fromCharCode(keycode);
         console.log(char);
@@ -134,6 +134,9 @@ export default class Game {
                     break;
             }
         }
+    }
+    handleKeyUp(event) {
+        this._player.reset_rotation();
     }
 
     clean() {

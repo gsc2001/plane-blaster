@@ -2,15 +2,20 @@ import * as THREE from 'three';
 import { LiveObject } from './liveObject';
 import config from './config';
 import { rand, randint } from './utils';
+import { PlaneGeometry, Vector3 } from 'three';
 
+const backVec = [0, -1, 0];
+let prev = new Vector3(0, -1, 0);
 export default class Enemy extends LiveObject {
     constructor(pos, playerPos) {
         const vpos = new THREE.Vector3(...pos);
+        console.log(playerPos);
         super(
             pos,
-            '/models/sphere/new_sphere.gltf',
+            // '/models/sphere/new_sphere.gltf',
+            '/models/plane.gltf',
             [0.6, 0.6, 0.6],
-            vpos.sub(playerPos)
+            playerPos.sub(vpos).toArray()
         );
         this._bulletInterval = undefined;
         this._activated = false;
@@ -58,7 +63,8 @@ export default class Enemy extends LiveObject {
             return;
         }
         diff.normalize();
-        this._pos.add(diff.multiplyScalar(config.enemiesSpeed));
+        let movement = diff.multiplyScalar(config.enemiesSpeed);
+        this._pos.add(movement);
         this._front.copy(diff);
         this.updatePosition();
     }

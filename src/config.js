@@ -44,6 +44,8 @@ export default {
         speed: 0.2,
         initial_position: [0, -2, 0],
         rotationSpeed: Math.PI / 50,
+        rollSpeed: Math.PI / 25,
+        maxRoll: Math.PI / 6,
     },
 
     scoreAdd: 10,
