@@ -40,18 +40,18 @@ export default class Enemy extends LiveObject {
         super.destroy();
     }
     static getEnemies(playerPos) {
-        // if (config.debug) {
-        //     return [new Enemy([0, 10, 0], playerPos)];
-        // } else {
-        const nEnemies = randint(config.enemiesMin, config.enemiesMax);
-        let enemies = [];
-        for (let i = 0; i < nEnemies; i++) {
-            let x = rand(config.minx, config.maxx);
-            let y = rand(config.miny + 21, config.maxy);
-            enemies.push(new Enemy([x, y], playerPos.clone()));
+        if (config.debug) {
+            return [new Enemy([0, 10, 0], playerPos)];
+        } else {
+            const nEnemies = randint(config.enemiesMin, config.enemiesMax);
+            let enemies = [];
+            for (let i = 0; i < nEnemies; i++) {
+                let x = rand(config.minx, config.maxx);
+                let y = rand(config.miny + 21, config.maxy);
+                enemies.push(new Enemy([x, y], playerPos.clone()));
+            }
+            return enemies;
         }
-        return enemies;
-        // }
     }
 
     followPlayer(playerVec, addToScene) {

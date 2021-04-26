@@ -156,6 +156,7 @@ export default class Game {
             .reduce((prev, v) => [...prev, ...v], []);
         const playerBullets = this._player.getBullets();
 
+        // bullet and enemy
         for (let bullet of enemybullets) {
             if (GameObject.collided(bullet, this._player)) {
                 this._health -= config.player.hitHealthDecrease;
@@ -163,12 +164,21 @@ export default class Game {
             }
         }
 
+        // bullet and player
         for (let bullet of playerBullets) {
             for (let enemy of this._enemies) {
                 if (GameObject.collided(enemy, bullet)) {
                     enemy.destroy();
                     bullet.destroy();
                 }
+            }
+        }
+
+        //player and enemy
+        for (let enemy of this.getActiveEnemies()) {
+            if (GameObject.collided(enemy, this._player)) {
+                this._health -= config.player.crashHealthDecrease;
+                enemy.destroy();
             }
         }
     }

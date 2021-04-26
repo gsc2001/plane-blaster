@@ -41,6 +41,7 @@ export default {
     player: {
         health: 100,
         hitHealthDecrease: 5,
+        crashHealthDecrease: 40,
         speed: 0.2,
         initial_position: [0, -2, 0],
         rotationSpeed: Math.PI / 50,
@@ -56,7 +57,7 @@ export default {
     enemiesMax: 10,
     enemiesSpeed: 0.04,
     enemyBulletDelay: 1000,
-    enemyActivateDist: 20,
+    enemyActivateDist: 10,
     bulletSpeed: 0.2,
     bulletMinDelay: 700,
 };
