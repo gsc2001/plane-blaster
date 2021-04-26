@@ -23,8 +23,8 @@ export default {
         },
         directional: {
             on: true,
-            intensity: 20,
-            position: [0, 0, 10],
+            intensity: 5,
+            position: [0, -10, 10],
             lookAt: [0, 0, 0],
         },
     },

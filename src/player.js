@@ -1,11 +1,10 @@
-import * as THREE from 'three';
 import { Vector3 } from 'three';
 import { LiveObject } from './liveObject';
 const vecz = new Vector3(0, 0, 1);
 
 export default class Player extends LiveObject {
     constructor(pos) {
-        super(pos, '/models/sphere/new_sphere.gltf', [0.6, 0.6, 0.6]);
+        super(pos, '/models/plane.gltf', [0.6, 0.6, 0.6]);
     }
     rotate(value) {
         console.log(this._front);

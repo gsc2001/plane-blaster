@@ -95,9 +95,9 @@ export default class Game {
             this.directional_light.position
                 .set(...config.lighting.directional.position)
                 .normalize();
-            this.directional_light.lookAt(
-                ...config.lighting.directional.lookAt
-            );
+            // this.directional_light.lookAt(
+            //     ...config.lighting.directional.lookAt
+            // );
             this._scene.add(this.directional_light);
         }
     }
