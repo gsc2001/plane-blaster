@@ -57,7 +57,7 @@ export default {
     enemiesMax: 10,
     enemiesSpeed: 0.04,
     enemyBulletDelay: 1000,
-    enemyActivateDist: 26,
+    enemyActivateDist: 35,
     bulletSpeed: 0.2,
     bulletMinDelay: 700,
 };
