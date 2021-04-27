@@ -37,6 +37,7 @@ export default class Game {
         this._move_camera = !config.debug;
         this._scoreElement = document.getElementById('score');
         this._healthElement = document.getElementById('health');
+        this._playing = true;
 
         this._renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(this._renderer.domElement);
@@ -194,6 +195,9 @@ export default class Game {
         this._healthElement.innerHTML = this._health;
     }
     update() {
+        if (!this._playing) {
+            return;
+        }
         // move camera by some velocity
         if (this._move_camera) {
             this._camera.position.y += config.camera.speed;
@@ -211,8 +215,9 @@ export default class Game {
         this.detectCollisions();
         // Health checking
         if (this._health <= 0) {
-            // TODO: End game
-            console.log('You lost');
+            this._playing = false;
+            this._player.destroy();
+            document.getElementById('gameOver').style.display = 'flex';
         }
         this.showScoreAndHealth();
     }

@@ -28,6 +28,18 @@
                 width: 100vw;
                 font-size: 3rem;
             }
+            #gameOver {
+                position: fixed;
+                display: none;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                width: 100vw;
+                font-size: 3rem;
+                background-color: rgba(0, 0, 0, 0.5);
+                color: white;
+                font-weight: 900;
+            }
         </style>
         <div id="loading">Loading...</div>
         <div class="container">
@@ -38,6 +50,7 @@
                 Health: <span id="health"> 100 </span>
             </div>
         </div>
+        <div id="gameOver">You Lost !</div>
     </head>
     <body></body>
 </html>
