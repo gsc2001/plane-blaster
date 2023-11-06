@@ -85,7 +85,6 @@ export default class GameObject {
     moveWithCamera(miny) {
         this._pos.y = Math.max(miny, this._pos.y);
         this.updatePosition();
-        console.log(this._front);
     }
     static collided(o1, o2) {
         if (!o1.is_active() || !o2.is_active()) return false;
