@@ -26,7 +26,7 @@ class Ground {
             points = [...points, ...point];
         }
         let sprite = new THREE.TextureLoader().load(
-            'http://localhost:8080/images/star.png'
+            '/images/star.png'
         );
         let pointsMaterial = new THREE.PointsMaterial({
             color: 0xffffff,
