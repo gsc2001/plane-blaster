@@ -117,7 +117,7 @@ export default class Game {
         if (char == 'D') this._player.movex(config.player.speed);
         if (char == 'Q') this._player.rotate(config.player.rotationSpeed);
         if (char == 'E') this._player.rotate(-config.player.rotationSpeed);
-        if (char == 'F') {
+        if (char == ' ') {
             this._player.fireBullet().then(bul => {
                 if (bul) this.sceneAdd(bul);
             });
